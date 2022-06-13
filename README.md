@@ -25,7 +25,7 @@ web3.0的世界是一个可信任的世界，可信世界需要一个诚实的�
 
 这样GCYY就成为物理世界组织与个人在web3.0世界的灵魂护照，激发社会每个的服务意识，提升灵魂护照评分，促进社会进步。
 
-PPT：https://i.2fei2.com/ADVAITA.pdf
+PPT：https://i.2fei2.com/ADVAITA2.pdf
 
 DEMO介绍：https://i.2fei2.com/%E9%9D%9E%E4%BA%8C-%E9%BB%91%E5%AE%A2%E6%9D%BE%E6%B8%B8%E6%88%8Fdemo.mp4
 
