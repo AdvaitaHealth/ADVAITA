@@ -23,4 +23,5 @@ DEMO介绍：https://i.2fei2.com/%E9%9D%9E%E4%BA%8C-%E9%BB%91%E5%AE%A2%E6%9D%BE%
 官网: https://advaita.world/
 
 “非二世界”小程序：
+
 ![](https://i.2fei2.com/poster/slide/2022-06-13/10:20:10/62a69eda512c7.jpg)
