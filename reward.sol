@@ -1,43 +1,63 @@
 // SPDX-License-Identifier: MIT
+pragma solidity ^0.8.7;
 
-pragma solidity ^0.8.11;
+import "@openzeppelin/contracts/token/ERC20/utils/SafeERC20.sol";
+ 
+contract TransferERC20Token {
 
-/*
-The function of contract is to send token when get a valid report hash
-And per report would be rewarded once
-*/
+  address public owner;
+  uint  balance;
 
-contract Reward {
+  //a map to store info if the user has been rewarded
+  mapping(string => bool) public user_is_reward;
 
-    //a map to store info if the user has been rewarded
-    mapping(string => bool) public user_is_reward;
-    
+  event TransferReceived(address _from,uint _amount);
+  event TransferSent(address _from,address _destAddr,uint _amount);
+  
+  constructor() {
+    owner = msg.sender;
+  }
 
-    //need a public account to maintain the balance of contract：API implement
-    //send token to contract before a user can attain reward token
-    function add_reward_to_pool() public payable {
-        require(msg.value > 10 ether,"The amount sent to the contract each time cannot be less than 10 eth");
-    }
+  //get erc20 token
+  receive() payable external {
+    balance += msg.value;
+    emit TransferReceived(msg.sender, msg.value);
+  }
 
-    //get contract balance
-    function getContractBalance() public view returns (uint) {
-        return address(this).balance;
-    }
-    
-    //params:report hash, public address 
-    function reward(string memory user, address payable public_address) public {
+  // //withdraw the rest money
+  // function withdraw(uint amount, address payable destAddr) public {
+  //   require(msg.sender == owner,"Only owner can withdraw funds");
+  //   require(amount <= balance,"Insufficient funds");
 
-        //verify hash 
-        require(bytes(user).length >0,"invalid report hash, please check it again");
+  //   destAddr.transfer(amount);
+  //   balance -= amount;
+  //   emit TransferSent(msg.sender,destAddr,amount);
+  // }
 
-        //duplicate reward varify
-        require(user_is_reward[user]== false,"the report hash has been used,please try another one ");
-        
-        //reward conditions 
-        require(address(this).balance > 1 ether,
-            "The balance of the contract account is insufficient, please send some token to contract");
-        public_address.transfer(1 ether);  
-        //set report reward status 
-        user_is_reward[user] = true;
-    }
+  //
+  function transferERC20(IERC20 token, uint amount, string memory reportHash,address publicAddr) public { 
+
+    //verify hash 
+    require(bytes(reportHash).length >0,"invalid report hash, please check it again");
+
+    //duplicate reward varify
+    require(user_is_reward[reportHash]== false,"the report hash has been used,please try another one ");
+
+    //Only owner can transfer funds
+    require(msg.sender == owner,"Only owner can transfer funds");
+
+    //get erc20 token balance
+    uint256 erc20balance = token.balanceOf(address(this));
+    require(amount <= erc20balance,"balance is low");
+
+    //transfer
+    token.transfer(publicAddr,amount);
+    emit TransferSent(msg.sender,publicAddr,amount);
+
+    user_is_reward[reportHash] = true;
+  }
+
 }
+
+
+ 
