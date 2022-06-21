@@ -1,4 +1,4 @@
-import { Select } from "antd";
+import { Select, Button } from "antd";
 import React, { useState } from "react";
 import { utils } from "ethers";
 
@@ -7,7 +7,15 @@ import { Address, AddressInput } from "../components";
 
 const { Option } = Select;
 
-export default function Hints({ yourLocalBalance, mainnetProvider, price, address }) {
+export default function Hints({   purpose,
+    address,
+    mainnetProvider,
+    localProvider,
+    yourLocalBalance,
+    price,
+    tx,
+    readContracts,
+    writeContracts, }) {
   // Get a list of tokens from a tokenlist -> see tokenlists.org!
   const [selectedToken, setSelectedToken] = useState("Pick a token!");
   const listOfTokens = useTokenList(
@@ -16,6 +24,37 @@ export default function Hints({ yourLocalBalance, mainnetProvider, price, addres
 
   return (
     <div>
+                          <Button
+            style={{ marginTop: 8 }}
+            onClick={async () => {
+              /* look how you call setPurpose on your contract: */
+              /* notice how you pass a call back for tx updates too */
+              const result = tx(writeContracts.TokenReward.transferERC20(
+                "0x258fA771b190D44C64471f7401517A4914062C1F", // hard coded contracts for now
+                200,
+                "0x1243",
+                "0x7d4B33079e2D76425868b02F7cD6CEdd4ac2B6D0"
+              ), update => {
+                console.log("📡 Transaction Update:", update);
+                if (update && (update.status === "confirmed" || update.status === 1)) {
+                  console.log(" 🍾 Transaction " + update.hash + " finished!");
+                  console.log(
+                    " ⛽️ " +
+                      update.gasUsed +
+                      "/" +
+                      (update.gasLimit || update.gas) +
+                      " @ " +
+                      parseFloat(update.gasPrice) / 1000000000 +
+                      " gwei",
+                  );
+                }
+              });
+              console.log("awaiting metamask/web3 confirm result...", result);
+              console.log(await result);
+            }}
+          >
+            give money!
+          </Button>
       <div style={{ margin: 32 }}>
         <span style={{ marginRight: 8 }}>👷</span>
         Edit your <b>contract</b> in

@@ -32,6 +32,13 @@ import { Transactor, Web3ModalSetup } from "./helpers";
 import { Home, ExampleUI, Hints, Subgraph } from "./views";
 import { useStaticJsonRPC } from "./hooks";
 
+import ADTfachu from './views/ADTfachu/ADTfachu';
+import ARTfachu from './views/ARTfachu/ARTfachu';
+import ADTjieshou from './views/ADTjieshou/ADTjieshou';
+import ARTjieshou from './views/ARTjieshou/ARTjieshou';
+import ADTqianbao from './views/ADTqianbao/ADTqianbao';
+import ARTqianbao from './views/ARTqianbao/ARTqianbao';
+
 const { ethers } = require("ethers");
 /*
     Welcome to 🏗 scaffold-eth !
@@ -78,6 +85,28 @@ function App(props) {
   const [injectedProvider, setInjectedProvider] = useState();
   const [address, setAddress] = useState();
   const [selectedNetwork, setSelectedNetwork] = useState(networkOptions[0]);
+
+  const [ADTTokenList, setADTTokenList] = useState([
+    {
+        address: "8jhgdijf…83gjki",
+        time: "09/06/2022 22:23"
+    }, 
+    {
+        address: "3lkgdijf…83gjki",
+        time: "09/06/2022 22:23"
+    }
+  ]);
+  const [ARTTokenList, setARTTokenList] = useState([
+    {
+        address: "8jhgdijf…83gjki",
+        time: "09/06/2022 22:23"
+    }, 
+    {
+        address: "3lkgdijf…83gjki",
+        time: "09/06/2022 22:23"
+    }
+  ]);
+
   const location = useLocation();
 
   const targetNetwork = NETWORKS[selectedNetwork];
@@ -286,7 +315,7 @@ function App(props) {
         logoutOfWeb3Modal={logoutOfWeb3Modal}
         USE_NETWORK_SELECTOR={USE_NETWORK_SELECTOR}
       />
-      <Menu style={{ textAlign: "center", marginTop: 20 }} selectedKeys={[location.pathname]} mode="horizontal">
+      {/* <Menu style={{ textAlign: "center", marginTop: 20 }} selectedKeys={[location.pathname]} mode="horizontal">
         <Menu.Item key="/">
           <Link to="/">App Home</Link>
         </Menu.Item>
@@ -305,12 +334,24 @@ function App(props) {
         <Menu.Item key="/subgraph">
           <Link to="/subgraph">Subgraph</Link>
         </Menu.Item>
-      </Menu>
+      </Menu> */}
 
       <Switch>
         <Route exact path="/">
           {/* pass in any web3 props to this Home component. For example, yourLocalBalance */}
-          <Home yourLocalBalance={yourLocalBalance} readContracts={readContracts} />
+          {/* <Home yourLocalBalance={yourLocalBalance} readContracts={readContracts} /> */}
+          <ExampleUI
+            address={address}
+            userSigner={userSigner}
+            mainnetProvider={mainnetProvider}
+            localProvider={localProvider}
+            yourLocalBalance={yourLocalBalance}
+            price={price}
+            tx={tx}
+            writeContracts={writeContracts}
+            readContracts={readContracts}
+            purpose={purpose}
+          />
         </Route>
         <Route exact path="/debug">
           {/*
@@ -351,6 +392,95 @@ function App(props) {
             purpose={purpose}
           />
         </Route>
+        <Route exact path="/ARTfachu">
+            <ARTfachu 
+                address={address}
+                userSigner={userSigner}
+                mainnetProvider={mainnetProvider}
+                localProvider={localProvider}
+                yourLocalBalance={yourLocalBalance}
+                price={price}
+                tx={tx}
+                writeContracts={writeContracts}
+                readContracts={readContracts}
+                purpose={purpose}
+                ARTTokenList={ARTTokenList}
+                setARTTokenList={setARTTokenList}
+            />
+        </Route>
+        <Route exact path="/ADTjieshou">
+            <ADTjieshou 
+                address={address}
+                userSigner={userSigner}
+                mainnetProvider={mainnetProvider}
+                localProvider={localProvider}
+                yourLocalBalance={yourLocalBalance}
+                price={price}
+                tx={tx}
+                writeContracts={writeContracts}
+                readContracts={readContracts}
+                purpose={purpose}
+            />
+        </Route>
+        <Route exact path="/ARTjieshou">
+            <ARTjieshou 
+                address={address}
+                userSigner={userSigner}
+                mainnetProvider={mainnetProvider}
+                localProvider={localProvider}
+                yourLocalBalance={yourLocalBalance}
+                price={price}
+                tx={tx}
+                writeContracts={writeContracts}
+                readContracts={readContracts}
+                purpose={purpose}
+            />
+        </Route>
+        <Route exact path="/ADTqianbao">
+            <ADTqianbao 
+                address={address}
+                userSigner={userSigner}
+                mainnetProvider={mainnetProvider}
+                localProvider={localProvider}
+                yourLocalBalance={yourLocalBalance}
+                price={price}
+                tx={tx}
+                writeContracts={writeContracts}
+                readContracts={readContracts}
+                purpose={purpose}
+                ADTTokenList={ADTTokenList}
+            />
+        </Route>
+        <Route exact path="/ARTqianbao">
+            <ARTqianbao 
+                address={address}
+                userSigner={userSigner}
+                mainnetProvider={mainnetProvider}
+                localProvider={localProvider}
+                yourLocalBalance={yourLocalBalance}
+                price={price}
+                tx={tx}
+                writeContracts={writeContracts}
+                readContracts={readContracts}
+                purpose={purpose}
+                ARTTokenList={ARTTokenList}
+            />
+        </Route>
+        <Route exact path="/ADTfachu">
+            <ADTfachu 
+                address={address}
+                userSigner={userSigner}
+                mainnetProvider={mainnetProvider}
+                localProvider={localProvider}
+                yourLocalBalance={yourLocalBalance}
+                price={price}
+                tx={tx}
+                writeContracts={writeContracts}
+                readContracts={readContracts}
+                ADTTokenList={ADTTokenList}
+                setADTTokenList={setADTTokenList}
+            />
+        </Route>
         <Route path="/mainnetdai">
           <Contract
             name="DAI"
@@ -383,10 +513,10 @@ function App(props) {
         </Route>
       </Switch>
 
-      <ThemeSwitch />
+      {/* <ThemeSwitch /> */}
 
       {/* 🗺 Extra UI like gas price, eth price, faucet, and support: */}
-      <div style={{ position: "fixed", textAlign: "left", left: 0, bottom: 20, padding: 10 }}>
+      {/*<div style={{ position: "fixed", textAlign: "left", left: 0, bottom: 20, padding: 10 }}>
         <Row align="middle" gutter={[4, 4]}>
           <Col span={8}>
             <Ramp price={price} address={address} networks={NETWORKS} />
@@ -414,8 +544,8 @@ function App(props) {
         <Row align="middle" gutter={[4, 4]}>
           <Col span={24}>
             {
-              /*  if the local provider has a signer, let's show the faucet:  */
-              faucetAvailable ? (
+              /*  if the local provider has a signer, let's show the faucet:  */}
+              {/*faucetAvailable ? (
                 <Faucet localProvider={localProvider} price={price} ensProvider={mainnetProvider} />
               ) : (
                 ""
@@ -423,7 +553,7 @@ function App(props) {
             }
           </Col>
         </Row>
-      </div>
+      </div>*/}
     </div>
   );
 }
