@@ -19,15 +19,22 @@ export default function ARTfachu({
 
   const data = {};
 
+  const [balance, setBalance] = React.useState(0);
+  const [remaining, setRemaining] = React.useState(balance);
+
   if (readContracts && readContracts.TokenReward) {
-    console.log(
-      "readContract: ",
-      readContracts.TokenReward.getContractBalance("0x258fA771b190D44C64471f7401517A4914062C1F"),
-    );
+      readContracts.TokenReward.getContractBalance("0x258fA771b190D44C64471f7401517A4914062C1F").then(result => {
+        setBalance(Number(result._hex)/100);
+        setRemaining(Number(result._hex)/100);
+      })
   }
 
   function goToARTqianbao() {
     history.push("/ARTqianbao");
+  }
+
+  function handleAmountChange() {
+    setRemaining(balance - document.getElementById("sendAmountART").value);
   }
   //   const goToADTqianbao = useCallback(() => history.push('/ADTqianbao'), [history]);
 
@@ -48,7 +55,7 @@ export default function ARTfachu({
             src="https://project-user-resource-1256085488.cos.ap-guangzhou.myqcloud.com/617a2ca7e4f1450011362b37/62ac76cac1c22a0011eb9872/16554709254250119433.png"
             className={`${styles["image_1"]}`}
           />
-          <span className={`${styles["text_2"]}`}>88.88888888 ART</span>
+          <span className={`${styles["text_2"]}`}>{balance} ART</span>
         </div>
         <div className={`flex-col ${styles["group_2"]}`}>
           <span className={`${styles["text_3"]}`}>地址</span>
@@ -66,10 +73,10 @@ export default function ARTfachu({
           <span className={`${styles["text_5"]}`}>数量</span>
           <div className={`flex-col items-start ${styles["text-wrapper"]}`}>
             <span className={`${styles["text_6"]}`}>
-              <input id="sendAmountART" className={`${styles["text_4"]}`} placeholder="amount" />
+              <input id="sendAmountART" className={`${styles["text_4"]}`} placeholder="amount" onChange={handleAmountChange}/>
             </span>
           </div>
-          <span className={`${styles["text_7"]}`}>余额：88.77777777</span>
+          <span className={`${styles["text_7"]}`}>余额：{remaining}</span>
         </div>
         <div
           className={`flex-col items-center ${styles["button"]}`}
