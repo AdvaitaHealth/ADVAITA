@@ -7,7 +7,7 @@ dataSources:
     network: moonbaseAlpha
     source:
       abi: YourContract
-      address: "0x68408c2A628A5703b1329924a4eB2599c08865b7"
+      address: "0xA57DC4Cf7795FcA3ca24413A9E5b702Ac0D562e4"
     mapping:
       kind: ethereum/events
       apiVersion: 0.0.6

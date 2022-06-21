@@ -55,4 +55,10 @@ contract TokenReward {
 
     user_is_reward[reportHash] = true;
   }
+
+  function getContractBalance(IERC20 tokenContractAddress) public view returns (uint) {
+    //get erc20 token balance
+    uint256 erc20balance = tokenContractAddress.balanceOf(address(this));
+    return erc20balance;
+  }
 }

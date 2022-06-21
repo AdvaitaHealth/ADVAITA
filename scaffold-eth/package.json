@@ -67,6 +67,7 @@
     ]
   },
   "dependencies": {
+    "caniuse-lite": "^1.0.30001357",
     "react-modern-drawer": "^1.1.1"
   },
   "devDependencies": {
